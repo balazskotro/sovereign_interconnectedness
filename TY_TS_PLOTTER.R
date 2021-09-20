@@ -4,7 +4,7 @@ library("lubridate")
 library("ggplot2")
 library(scales)
 
-input_data_750 <- read_excel("D:\\Research_results\\Sovereign_interconnectedness\\Data\\edge_counts.xlsx", 
+input_data_750 <- read_excel("C:\\Research\\TY\\sovereign_interconnectedness\\edge_counts.xlsx", 
                       sheet = "Full_percentage_750")
 
 melted_750<-melt(input_data_750,  id.vars = "Date", value.name = "value")

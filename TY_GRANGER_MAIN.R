@@ -25,7 +25,7 @@ c_lev <- 0.01
 type_of_test <- "ADF"
 Type_of_inf_criterion <- "AIC" #AIC, HQ SC, FPE
 granger_p <- 1/100
-time_subset <- "rolling"
+time_subset <- "fix"
 windowsize <- 750
 ws <- 5
 start_date <- as.Date('2004-07-01')
