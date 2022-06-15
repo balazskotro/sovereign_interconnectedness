@@ -19,13 +19,13 @@ pacman::p_load(stringi, chron, reshape2, plyr, ggrepel, directlabels, tidyr,
 usage <- "excel"
 frequency <- "daily" #daily weekly monthly
 input <- c("all","node")
-nodeident <- "USA_B_3"
+nodeident <- "USA_B_1"
 typeoftest <- 'TY'
 c_lev <- 0.01
 type_of_test <- "ADF"
 Type_of_inf_criterion <- "AIC" #AIC, HQ SC, FPE
-granger_p <- 1/100
-time_subset <- "rolling"
+granger_p <- 1/1000
+time_subset <- "fix"
 windowsize <- 750
 ws <- 5
 start_date <- as.Date('2004-07-01')

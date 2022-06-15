@@ -58,12 +58,12 @@ curve_universe_pivot<-curve_universe_pivot[!(weekdays(as.Date(curve_universe_piv
 
 
 curve_universe_stat<-stat.desc(curve_universe_pivot)
-acf_list<-apply(curve_universe_pivot, 2,acf)
+#acf_list<-apply(curve_universe_pivot, 2,acf)
 
 #sapply(acf, FUN = function (u) acf(lag=10) )
 #f<-apply(curve_universe_pivot_ordered, 2, function(ts) acf(ts, lag.max=10))
 
-write.csv(curve_universe_stat,"C:\\Research\\Sovereign_interconnectedness\\Data\\curve_universe_stat.csv", 
-          row.names = TRUE) #save the results to a csv
+#write.csv(curve_universe_stat,"C:\\Research\\Sovereign_interconnectedness\\Data\\curve_universe_stat.csv", 
+ #         row.names = TRUE) #save the results to a csv
 
 

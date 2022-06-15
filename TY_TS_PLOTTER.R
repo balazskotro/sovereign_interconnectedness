@@ -49,8 +49,50 @@ ggplot() +
   theme(plot.title = element_text(hjust = 0.5))
 
 #-----------------------------------------------------------------------
+input_data_500 <- read_excel("D:\\Research_results\\Sovereign_interconnectedness\\Data\\edge_data (2).xlsx", 
+                             sheet = "Sheet1")
 
-input_data_500 <- read_excel("D:\\Research_results\\Sovereign_interconnectedness\\Data\\edge_counts.xlsx", 
+melted_500<-melt(input_data_500,  id.vars = "Date", value.name = "value")
+melted_500$Date<-ymd(melted_500$Date)
+
+
+
+ggplot() +
+  geom_rect(data=sovereign,
+            aes(xmin=xmin, xmax=xmax, ymin=-Inf, ymax=Inf), 
+            fill="pink", alpha=0.5) +
+  geom_rect(data=euro,
+            aes(xmin=xmin, xmax=xmax, ymin=-Inf, ymax=Inf), 
+            fill="cornflowerblue", alpha=0.5) +
+  labs(title = "Gross number of connections on top 5 nodes \n Window size: 750; Lag: based on AIC")+
+  geom_line(data=melted_500, aes(Date, value, colour = variable, size = variable))+
+  scale_size_manual(values = c(1.2,1,1))+
+  scale_color_manual(values=c("brown", "green2", "snow4"))+
+  #scale_y_continuous(labels=percent) +
+  scale_x_date(expand=c(0,0),date_breaks = "years",date_labels = "%Y")+
+  labs(x=NULL, y=NULL) +
+  theme_bw() +
+  theme(axis.text.x=element_text(hjust=1, vjust=0.5)) +
+  theme(text = element_text(size=20))+
+  theme(panel.grid.minor=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(axis.ticks=element_blank())+
+  theme(
+    legend.position = c(.999, .999),
+    legend.justification = c("right", "top"),
+    legend.box.just = "right",
+    legend.margin = margin(1, 1, 1, 1),
+    legend.title=element_blank(),
+    legend.text = element_text(size=18),
+    legend.background = element_rect(fill=alpha('white', 0)))+
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+
+
+
+
+ input_data_500 <- read_excel("D:\\Research_results\\Sovereign_interconnectedness\\Data\\edge_counts.xlsx", 
                              sheet = "Full_percentage_500")
 
 melted_500<-melt(input_data_500,  id.vars = "Date", value.name = "value")
@@ -67,9 +109,9 @@ ggplot() +
             fill="cornflowerblue", alpha=0.5) +
   labs(title = "Dynamic Toda-Yamamoto Spillover Analysis \n Window size: 500; Lag: based on AIC")+
   geom_line(data=melted_500, aes(Date, value, colour = variable, size = variable))+
-  scale_size_manual(values = c(1.2,1,1))+
+  #scale_size_manual(values = c(1.2,1,1))+
   scale_color_manual(values=c("magenta2", "cyan2", "yellow3"))+
-  scale_y_continuous(labels=percent) +
+  #scale_y_continuous(labels=percent) +
   scale_x_date(expand=c(0,0),date_breaks = "years",date_labels = "%Y")+
   labs(x=NULL, y=NULL) +
   theme_bw() +
@@ -132,18 +174,29 @@ ggplot() +
 input_data_granger <- read_excel("D:\\Research_results\\Sovereign_interconnectedness\\Data\\edge_counts.xlsx", 
                               sheet = "TY_Granger")
 
+input_data_granger <-input_data_granger[,1:2]
+
+
+
+input_data_granger <-tail(input_data_granger,340)
+
+input_data_granger$Granger<-(input_data_granger$Granger-min(input_data_granger$Granger))/
+  (max(input_data_granger$Granger)-min(input_data_granger$Granger))
+
+colnames(input_data_granger) <- c("Date","HHI index")
+
 melted_granger<-melt(input_data_granger,  id.vars = "Date", value.name = "value")
 melted_granger$Date<-ymd(melted_granger$Date)
 
 
 ggplot() +
-  geom_rect(data=sovereign,
-            aes(xmin=xmin, xmax=xmax, ymin=-Inf, ymax=Inf), 
-            fill="pink", alpha=0.5) +
-  geom_rect(data=euro,
-            aes(xmin=xmin, xmax=xmax, ymin=-Inf, ymax=Inf), 
-            fill="cornflowerblue", alpha=0.5) +
-  labs(title = "Dynamic Spillover Analysis \n Window size: 750; Lag: based on AIC \n Granger vs. Toda-Yamamoto")+
+#  geom_rect(data=sovereign,
+#            aes(xmin=xmin, xmax=xmax, ymin=-Inf, ymax=Inf), 
+#            fill="pink", alpha=0.5) +
+#  geom_rect(data=euro,
+#            aes(xmin=xmin, xmax=xmax, ymin=-Inf, ymax=Inf), 
+#            fill="cornflowerblue", alpha=0.5) +
+  labs(title = "Total Network Interconnectedness Measure")+
   geom_line(data=melted_granger, aes(Date, value, colour = variable, size = variable))+
   scale_size_manual(values = c(1,1))+
   scale_color_manual(values=c("black", "magenta"))+
@@ -168,7 +221,7 @@ ggplot() +
 
 #-------------------------------------------------------------------------------------------
 input_data_levels <- read_excel("D:\\Research_results\\Sovereign_interconnectedness\\Data\\factors.xlsx", 
-                                sheet = "Levels")
+                                sheet = "Levels_norm")
 
 melted_levels<-melt(input_data_levels,  id.vars = "Date", value.name = "value")
 melted_levels$Date<-ymd(melted_levels$Date)
@@ -181,7 +234,7 @@ ggplot() +
   geom_rect(data=euro,
             aes(xmin=xmin, xmax=xmax, ymin=-Inf, ymax=Inf), 
             fill="cornflowerblue", alpha=0.5) +
-  labs(title = "Diebold-Li factor model \n Level factors")+
+  labs(title = "Diebold-Li factor model \n Normalized level factors")+
   geom_line(data=melted_levels, aes(Date, value, color = variable, size = variable))+
   scale_size_manual(values = c(rep(1,20)))+
   #scale_color_manual(values=c("black", "magenta"))+
@@ -209,7 +262,7 @@ ggplot() +
 
 
 input_data_slopes <- read_excel("D:\\Research_results\\Sovereign_interconnectedness\\Data\\factors.xlsx", 
-                                 sheet = "Slopes")
+                                 sheet = "Slopes_norm")
 
 melted_slopes<-melt(input_data_slopes,  id.vars = "Date", value.name = "value")
 melted_slopes$Date<-ymd(melted_slopes$Date)
@@ -222,7 +275,7 @@ ggplot() +
   geom_rect(data=euro,
             aes(xmin=xmin, xmax=xmax, ymin=-Inf, ymax=Inf), 
             fill="cornflowerblue", alpha=0.5) +
-  labs(title = "Diebold-Li factor model \n Slope factors")+
+  labs(title = "Diebold-Li factor model \n Normalized slope factors")+
   geom_line(data=melted_slopes, aes(Date, value, color = variable, size = variable))+
   scale_size_manual(values = c(rep(1,20)))+
   #scale_color_manual(values=c("black", "magenta"))+
@@ -248,7 +301,7 @@ ggplot() +
 
 
 input_data_curvatures <- read_excel("D:\\Research_results\\Sovereign_interconnectedness\\Data\\factors.xlsx", 
-                                sheet = "Curvatures")
+                                sheet = "Curvatures_norm")
 
 melted_curvatures<-melt(input_data_curvatures,  id.vars = "Date", value.name = "value")
 melted_curvatures$Date<-ymd(melted_curvatures$Date)
@@ -261,7 +314,7 @@ ggplot() +
   geom_rect(data=euro,
             aes(xmin=xmin, xmax=xmax, ymin=-Inf, ymax=Inf), 
             fill="cornflowerblue", alpha=0.5) +
-  labs(title = "Diebold-Li factor model \n Curvature factors")+
+  labs(title = "Diebold-Li factor model \n Normalized curvature factors")+
   geom_line(data=melted_curvatures, aes(Date, value, color = variable, size = variable))+
   scale_size_manual(values = c(rep(1,20)))+
   #scale_color_manual(values=c("black", "magenta"))+

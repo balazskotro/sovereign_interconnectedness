@@ -45,8 +45,6 @@ lambda_function<-function(yield_1, data_frame)
 # }
 
 
-
-
 if (usage=="excel") {
  global_lambdas1<-read.csv(file = 'C:\\Research\\Sovereign_interconnectedness\\Data\\global_lambdas_full_lin.csv') 
  global_lambdas<-global_lambdas1[,-1]
